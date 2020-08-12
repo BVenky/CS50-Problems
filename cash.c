@@ -9,10 +9,13 @@ int main(void)
     int numOfcoins[4] = {0, 0, 0, 0};
 
     int tmpInput = round(input * 100);
+    int totalCoins = 0;
+
     for (int i = 0; i < 4; i++)
     {
         numOfcoins[i] = tmpInput / coins[i];
         tmpInput = tmpInput - (numOfcoins[i] * coins[i]);
-        printf("%d\n", numOfcoins[i]);
+        totalCoins = totalCoins + numOfcoins[i];
     }
+
 }
