@@ -35,7 +35,7 @@ int main(void)
         count += 1;
     }
 
-    //printf("\n");
+    //printf("%d\n", count);
 
     //printf("%d\n", sum_alt);
 
@@ -56,6 +56,10 @@ int main(void)
                 if (digits[count - 2] == i)
                 {
                     printf("MASTERCARD\n");
+                }
+                else
+                {
+                    printf("INVALID\n");
                 }
             }
         }
