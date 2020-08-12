@@ -14,13 +14,13 @@ int main(void)
     int coins[4] = {25, 10, 5, 1};
     int numOfcoins[4] = {0, 0, 0, 0};
 
-    int tmpInput = round(input * 100);
+    int tmpInput = round(input * 100);  //convert dollars to cents
     int totalCoins = 0;
 
     for (int i = 0; i < 4; i++)
     {
-        numOfcoins[i] = tmpInput / coins[i];
-        tmpInput = tmpInput - (numOfcoins[i] * coins[i]);
+        numOfcoins[i] = tmpInput / coins[i];    //get absolute value by dividing input value by coin value
+        tmpInput = tmpInput - (numOfcoins[i] * coins[i]);   //now minus the value from input value
         totalCoins = totalCoins + numOfcoins[i];
     }
     printf("%d\n", totalCoins);
