@@ -31,11 +31,7 @@ int main(void)
         //Loop for 2nd Half
         for (int k = 0; k < height; k++)
         {
-            if (k > i - 1)
-            {
-                printf(" ");    //Print spaces
-            }
-            else
+            if (k <= i - 1)
             {
                 printf("#");
             }
