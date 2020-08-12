@@ -22,10 +22,12 @@ int main(void)
         if (count % 2)
         {
             sum_alt = sum_alt + ((digits[count] * 2) % 10) + ((digits[count] * 2) / 10);    //Multiply every other digit by 2 and add all digits
+            //printf("Loop 1: %d %d %d %d\n", sum_alt, digits[count], (digits[count] * 2) % 10, (digits[count] * 2) / 10);
         }
         else
         {
             sum_alt = sum_alt + digits[count];  //Add digits which are not multiplied
+            //printf("Loop 2: %d\n", sum_alt);
         }
 
         tmp = tmp / 10;
@@ -43,11 +45,11 @@ int main(void)
     }
     else
     {
-        if (digits[count - 1] == 4)
+        if (digits[count - 1] == 4 && (count == 13 || count == 16))
         {
             printf("VISA\n");
         }
-        else if (digits[count - 1] == 5)
+        else if (digits[count - 1] == 5 && count == 16)
         {
             for (int i = 1; i <= 5; i++)
             {
@@ -57,9 +59,13 @@ int main(void)
                 }
             }
         }
-        else if ((digits[count - 1] == 3) && ((digits[count - 2] == 4) || (digits[count - 2] == 7)))
+        else if ((digits[count - 1] == 3) && ((digits[count - 2] == 4) || (digits[count - 2] == 7)) && count == 15)
         {
             printf("AMEX\n");
+        }
+        else
+        {
+            printf("INVALID\n");
         }
     }
 
