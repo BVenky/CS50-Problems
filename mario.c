@@ -26,7 +26,7 @@ int main(void)
             }
         }
 
-        printf(" ");
+        printf("  ");
 
         //Loop for 2nd Half
         for (int k = 0; k < height; k++)
