@@ -51,16 +51,13 @@ int main(void)
         }
         else if (digits[count - 1] == 5 && count == 16)
         {
-            for (int i = 1; i <= 5; i++)
+            if (digits[count - 2] <= 5 && digits[count - 2] >= 1)
             {
-                if (digits[count - 2] == i)
-                {
-                    printf("MASTERCARD\n");
-                }
-                else
-                {
-                    printf("INVALID\n");
-                }
+                printf("MASTERCARD\n");
+            }
+            else
+            {
+                printf("INVALID\n");
             }
         }
         else if ((digits[count - 1] == 3) && ((digits[count - 2] == 4) || (digits[count - 2] == 7)) && count == 15)
