@@ -8,14 +8,18 @@ int main(void)
     int coins[4] = {25, 10, 5, 1};
     int numOfcoins[4] = {0, 0, 0, 0};
 
-    int tmpInput = round(input * 100);
-    int totalCoins = 0;
-
-    for (int i = 0; i < 4; i++)
+    if (input > 0)
     {
-        numOfcoins[i] = tmpInput / coins[i];
-        tmpInput = tmpInput - (numOfcoins[i] * coins[i]);
-        totalCoins = totalCoins + numOfcoins[i];
+        int tmpInput = round(input * 100);
+        int totalCoins = 0;
+
+        for (int i = 0; i < 4; i++)
+        {
+            numOfcoins[i] = tmpInput / coins[i];
+            tmpInput = tmpInput - (numOfcoins[i] * coins[i]);
+            totalCoins = totalCoins + numOfcoins[i];
+        }
+        printf("%d\n", totalCoins);
     }
 
 }
