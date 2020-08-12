@@ -4,22 +4,25 @@
 
 int main(void)
 {
-    float input = get_float("Enter the Change owed by us: ");   //Get change owed from the user
+    float input;
+    do
+    {
+        input = get_float("Enter the Change owed by us: ");   //Get change owed from the user
+    }
+    while (input > 0);
+
     int coins[4] = {25, 10, 5, 1};
     int numOfcoins[4] = {0, 0, 0, 0};
 
-    if (input > 0)
-    {
-        int tmpInput = round(input * 100);
-        int totalCoins = 0;
+    int tmpInput = round(input * 100);
+    int totalCoins = 0;
 
-        for (int i = 0; i < 4; i++)
-        {
-            numOfcoins[i] = tmpInput / coins[i];
-            tmpInput = tmpInput - (numOfcoins[i] * coins[i]);
-            totalCoins = totalCoins + numOfcoins[i];
-        }
-        printf("%d\n", totalCoins);
+    for (int i = 0; i < 4; i++)
+    {
+        numOfcoins[i] = tmpInput / coins[i];
+        tmpInput = tmpInput - (numOfcoins[i] * coins[i]);
+        totalCoins = totalCoins + numOfcoins[i];
     }
+    printf("%d\n", totalCoins);
 
 }
