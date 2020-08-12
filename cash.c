@@ -9,7 +9,7 @@ int main(void)
     {
         input = get_float("Enter the Change owed by us: ");   //Get change owed from the user
     }
-    while (input > 0);
+    while (input < 0);
 
     int coins[4] = {25, 10, 5, 1};
     int numOfcoins[4] = {0, 0, 0, 0};
