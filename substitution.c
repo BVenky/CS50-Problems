@@ -15,7 +15,7 @@ int main(int argc, string argv[])
         {
             for (int i = 0; i < len; i++)
             {
-                if(!(key[i] >= 97 && key[i] <= 122) || !(key[i] >= 65 && key[i] <= 90))
+                if (!(key[i] >= 97 && key[i] <= 122) && !(key[i] >= 65 && key[i] <= 90))
                 {
                     return 1;
                 }
