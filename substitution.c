@@ -16,7 +16,7 @@ int main(int argc, string argv[])
             int tmp[len];
             for (int i = 0; i < len; i++)
             {
-                if (!(key[i] >= 97 && key[i] <= 122) && !(key[i] >= 65 && key[i] <= 90))
+                if (!(key[i] >= 97 && key[i] <= 122) && !(key[i] >= 65 && key[i] <= 90))    //Check if key consists of only alphabets
                 {
                     return 1;
                 }
@@ -24,7 +24,7 @@ int main(int argc, string argv[])
                 {
                     for (int j = 0; j < len; j++)
                     {
-                        if (tmp[j] == (int) key[i])
+                        if (tmp[j] == (int) key[i]) //check if any character in key is repeated
                         {
                             return 1;
                         }
@@ -43,12 +43,12 @@ int main(int argc, string argv[])
                 if (input[i] <= 122 && input[i] >= 97)
                 {
                     keyIndex = input[i] - 97;
-                    printf("%c", tolower(key[keyIndex]));
+                    printf("%c", tolower(key[keyIndex]));   //print encoded key as lower if input is lower as well
                 }
                 else if (input[i] <= 90 && input[i] >= 65)
                 {
                     keyIndex = input[i] - 65;
-                    printf("%c", toupper(key[keyIndex]));
+                    printf("%c", toupper(key[keyIndex]));   //print encoded key as upper if input is upper as well
                 }
                 else
                 {
