@@ -13,6 +13,13 @@ int main(int argc, string argv[])
 
         if (len == 26)  //Condition 1 to check length of key equals 26
         {
+            for (int i = 0; i < len; i++)
+            {
+                if(!(key[i] >= 97 && key[i] <= 122) || !(key[i] >= 65 && key[i] <= 90))
+                {
+                    return 1;
+                }
+            }
             string input = get_string("plaintext:");    //get input text from user to encode
             int ipLen = strlen(input);
             printf("ciphertext:");
