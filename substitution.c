@@ -38,6 +38,7 @@ int main(int argc, string argv[])
                 //printf("%i", input[i]);
             }
             printf("\n");
+            return 0;
         }
         else
         {
