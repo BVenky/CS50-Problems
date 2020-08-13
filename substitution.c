@@ -13,11 +13,23 @@ int main(int argc, string argv[])
 
         if (len == 26)  //Condition 1 to check length of key equals 26
         {
+            int tmp[len];
             for (int i = 0; i < len; i++)
             {
                 if (!(key[i] >= 97 && key[i] <= 122) && !(key[i] >= 65 && key[i] <= 90))
                 {
                     return 1;
+                }
+                else
+                {
+                    for (int j = 0; j < len; j++)
+                    {
+                        if (tmp[j] == (int) key[i])
+                        {
+                            return 1;
+                        }
+                    }
+                    tmp[i] = key[i];
                 }
             }
             string input = get_string("plaintext:");    //get input text from user to encode
