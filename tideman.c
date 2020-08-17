@@ -255,7 +255,7 @@ void lock_pairs(void)
         for (int j = 0; j < pair_count; j++)
         {
 
-            if (pairs[i].winner == pairs[j].loser && i <= j)
+            if (pairs[i].winner == pairs[j].loser && i != j)
             {
                 cyclic[i] = true;
                 break;
