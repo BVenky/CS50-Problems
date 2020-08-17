@@ -1,6 +1,7 @@
 #include <cs50.h>
 #include <stdio.h>
 #include <string.h>
+
 // Max number of candidates
 #define MAX 9
 
@@ -32,11 +33,6 @@ void add_pairs(void);
 void sort_pairs(int start, int count, pair array[]);
 void lock_pairs(void);
 void print_winner(void);
-string s1[3] = {"Alice", "Charlie", "Bob"};
-string s2[3] = {"Alice", "Charlie", "Bob"};
-string s3[3] = {"Bob", "Charlie", "Alice"};
-string s4[3] = {"Bob", "Charlie", "Alice"};
-string s5[3] = {"Charlie", "Alice", "Bob"};
 
 int main(int argc, string argv[])
 {
