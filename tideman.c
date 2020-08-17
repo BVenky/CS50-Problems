@@ -262,7 +262,7 @@ void lock_pairs(void)
             }
         }
     }
-    check = false;
+    check = true;
     for (int j = 0; j < pair_count; j++)
     {
         if(cyclic[j])
