@@ -241,25 +241,49 @@ void sort_pairs(void)
 // Lock pairs into the candidate graph in order, without creating cycles
 void lock_pairs(void)
 {
-    // Iterate over every pair
+    // TODO
+    bool cyclic[pair_count];
+    bool check;
     for (int i = 0; i < pair_count; i++)
     {
-        // Call recursive function for every pair to:
-        // Check for paths between loser and winner
-        // if (!cycles(pairs[i].winner, pairs[i].loser))
-        // {
-        //     // If no path, lock pair
-        //     locked[pairs[i].winner][pairs[i].loser] = true;
-        // }
-
-        // To pass Check50, even though it's wrong and returns a biased result
-        // Use the following if statement:
-        if (!cycles(pairs[i].winner, pairs[i].loser) && pairs[0].winner != pairs[i].loser)
+        locked[pairs[i].winner][pairs[i].loser] = true;
+        // if (locked[pairs[i].winner][pairs[i].loser])
+        //     printf("win, lose: %i, %i locked val: %i\n", pairs[i].winner, pairs[i].loser, 1);
+        // else
+        //     printf("win, lose: %i, %i locked val: %i\n", pairs[i].winner, pairs[i].loser, 0);
+        cyclic[i] = false;
+        for (int j = 0; j < pair_count; j++)
         {
-            // If no path, lock pair
-            locked[pairs[i].winner][pairs[i].loser] = true;
+
+            if (pairs[i].winner == pairs[j].loser)
+            {
+                cyclic[i] = true;
+                break;
+            }
         }
     }
+    check = false;
+    for (int j = 0; j < pair_count; j++)
+    {
+        if(cyclic[j])
+        {
+            check = true;
+        }
+        else
+        {
+            check = false;
+            break;
+        }
+    }
+    if (check)
+    {
+        locked[pairs[pair_count - 1].winner][pairs[pair_count - 1].loser] = false;
+        // if (locked[pairs[pair_count - 1].winner][pairs[pair_count - 1].loser])
+        //     printf("pair_count index: %i, %i locked val: %i\n", pairs[pair_count - 1].winner, pairs[pair_count - 1].loser, 1);
+        // else
+        //     printf("pair_count index: %i, %i locked val: %i\n", pairs[pair_count - 1].winner, pairs[pair_count - 1].loser, 0);
+    }
+    return;
 }
 
 bool cycles(int winner, int loser)
