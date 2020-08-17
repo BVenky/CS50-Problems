@@ -122,18 +122,18 @@ int main(int argc, string argv[])
 
     lock_pairs();
 
-    for (int i = 0; i < pair_count; i++)
-    {
-        if(locked[pairs[i].winner][pairs[i].loser])
-        {
-            printf("P%i %i %i", 1, pairs[i].winner, pairs[i].loser);
-        }
-        else
-        {
-            printf("P%i %i %i", 0, pairs[i].winner, pairs[i].loser);
-        }
-    }
-    printf("\n");
+    // for (int i = 0; i < pair_count; i++)
+    // {
+    //     if(locked[pairs[i].winner][pairs[i].loser])
+    //     {
+    //         printf("P%i %i %i", 1, pairs[i].winner, pairs[i].loser);
+    //     }
+    //     else
+    //     {
+    //         printf("P%i %i %i", 0, pairs[i].winner, pairs[i].loser);
+    //     }
+    // }
+    // printf("\n");
 
     print_winner();
     return 0;
