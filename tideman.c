@@ -30,7 +30,8 @@ int candidate_count;
 bool vote(int rank, string name, int ranks[]);
 void record_preferences(int ranks[]);
 void add_pairs(void);
-void sort_pairs(int start, int count, pair array[]);
+void merge_sort(int start, int count, pair array[]);
+void sort_pairs(void);
 void lock_pairs(void);
 void print_winner(void);
 
@@ -117,7 +118,7 @@ int main(int argc, string argv[])
     //     printf("P%i ", preferences[pairs[i].winner][pairs[i].loser]);
     // }
     // printf("\n");
-    sort_pairs(0, pair_count - 1, pairs);
+    sort_pairs();
     // for (int i = 0; i < pair_count; i++)
     // {
     //     printf("P%i %i %i ", preferences[pairs[i].winner][pairs[i].loser], pairs[i].winner, pairs[i].loser);
@@ -191,82 +192,10 @@ void add_pairs(void)
 }
 
 // Sort pairs in decreasing order by strength of victory
-void sort_pairs(int start, int count, pair array[])
+void sort_pairs(void)
 {
     // TODO
-    if (count - start == 0)
-    {
-        return;
-    }
-
-    int midpoint;
-    if (start == 0)
-    {
-        midpoint = (count - start) / 2;
-    }
-    else
-    {
-        midpoint = start + ((count - start) / 2);
-    }
-    //printf("Sort Pairs: %i %i %i\n", start, count, midpoint);
-
-    sort_pairs(start, midpoint, array);
-    sort_pairs(midpoint + 1, count, array);
-
-    int tmpadd = start;;
-    for (int i = 0; i <= count; i++)
-    {
-        tmppairs[i] = pairs[i];
-
-    }
-
-    for (int i = start; i <= midpoint; i++)
-    {
-        for (int j = midpoint + 1; j <= count; j++)
-        {
-            if (tmppairs[i].winner != -1 && tmppairs[j].winner != -1)
-            {
-                if (preferences[tmppairs[i].winner][tmppairs[i].loser] < preferences[tmppairs[j].winner][tmppairs[j].loser])
-                {
-                    //printf("l1- %i %i %i\n", i, j, tmpadd);
-                    array[tmpadd] = tmppairs[j];
-                    tmppairs[j].winner = -1;
-                    tmpadd += 1;
-                    if (j == count)
-                    {
-                        array[tmpadd] = tmppairs[i];
-                        tmpadd += 1;
-                    }
-                }
-                else
-                {
-                    //printf("l2- %i %i %i\n", i, j, tmpadd);
-                    array[tmpadd] = tmppairs[i];
-                    tmppairs[i].winner = -1;
-                    tmpadd += 1;
-                    break;
-                }
-
-
-            }
-
-            // for (int k = start; k <= count; k++)
-            // {
-            //     printf("%i", preferences[array[k].winner][array[k].loser]);
-            // }
-            // printf("\n");
-        }
-
-
-        //printf("%i", preferences[pairs[i].winner][pairs[i].loser]);
-
-    }
-    // for (int k = start; k <= count; k++)
-    // {
-    //     printf("%i", preferences[array[k].winner][array[k].loser]);
-    // }
-    // printf("\n");
-
+    merge_sort(0, pair_count - 1, pairs);
     return;
 }
 
@@ -333,3 +262,78 @@ void print_winner(void)
     return;
 }
 
+void merge_sort(int start, int count, pair array[])
+{
+    if (count - start == 0)
+    {
+        return;
+    }
+
+    int midpoint;
+    if (start == 0)
+    {
+        midpoint = (count - start) / 2;
+    }
+    else
+    {
+        midpoint = start + ((count - start) / 2);
+    }
+    //printf("Sort Pairs: %i %i %i\n", start, count, midpoint);
+
+    merge_sort(start, midpoint, array);
+    merge_sort(midpoint + 1, count, array);
+
+    int tmpadd = start;;
+    for (int i = 0; i <= count; i++)
+    {
+        tmppairs[i] = pairs[i];
+
+    }
+
+    for (int i = start; i <= midpoint; i++)
+    {
+        for (int j = midpoint + 1; j <= count; j++)
+        {
+            if (tmppairs[i].winner != -1 && tmppairs[j].winner != -1)
+            {
+                if (preferences[tmppairs[i].winner][tmppairs[i].loser] < preferences[tmppairs[j].winner][tmppairs[j].loser])
+                {
+                    //printf("l1- %i %i %i\n", i, j, tmpadd);
+                    array[tmpadd] = tmppairs[j];
+                    tmppairs[j].winner = -1;
+                    tmpadd += 1;
+                    if (j == count)
+                    {
+                        array[tmpadd] = tmppairs[i];
+                        tmpadd += 1;
+                    }
+                }
+                else
+                {
+                    //printf("l2- %i %i %i\n", i, j, tmpadd);
+                    array[tmpadd] = tmppairs[i];
+                    tmppairs[i].winner = -1;
+                    tmpadd += 1;
+                    break;
+                }
+
+
+            }
+
+            // for (int k = start; k <= count; k++)
+            // {
+            //     printf("%i", preferences[array[k].winner][array[k].loser]);
+            // }
+            // printf("\n");
+        }
+
+
+        //printf("%i", preferences[pairs[i].winner][pairs[i].loser]);
+
+    }
+    // for (int k = start; k <= count; k++)
+    // {
+    //     printf("%i", preferences[array[k].winner][array[k].loser]);
+    // }
+    // printf("\n");
+}
