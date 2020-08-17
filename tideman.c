@@ -25,7 +25,7 @@ pair pairs[MAX * (MAX - 1) / 2];
 pair tmppairs[MAX * (MAX - 1) / 2];
 int pair_count;
 int candidate_count;
-
+bool lock = true;
 // Function prototypes
 bool vote(int rank, string name, int ranks[]);
 void record_preferences(int ranks[]);
@@ -34,6 +34,7 @@ void merge_sort(int start, int count, pair array[]);
 void sort_pairs(void);
 void lock_pairs(void);
 void print_winner(void);
+void validateLock(int j);
 
 int main(int argc, string argv[])
 {
@@ -211,93 +212,89 @@ void sort_pairs(void)
 
 
 // Lock pairs into the candidate graph in order, without creating cycles
+void validateLock(int j)
+{
+    if (j == 0)
+    {
+        return;
+    }
+
+    int r = 0;
+    bool rank[j];
+    for (int i = 0; i < j; i++)
+    {
+        rank[i] = false;
+    }
+
+    // checks all the submatrixes up to a single square using recursion
+    validateLock(j - 1);
+
+    for (int i = 0; i < j; i++)
+    {
+        for (int k = 0; k < j; k++)
+        {
+            if (locked[i][k] == true)
+            {
+                rank[i] = true;
+            }
+        }
+    }
+
+    for (int i = 0; i < j; i++)
+    {
+        if (rank[i] == true)
+        {
+            r++;
+        }
+    }
+
+    // if the rank is max the lock is canceled
+    if (r == j)
+    {
+        lock = false;
+    }
+}
+
+// Lock pairs into the candidate graph in order, without creating cycles
 void lock_pairs(void)
 {
-    // TODO
-    bool nonCyclic = false;
-    bool arr[pair_count];
     for (int i = 0; i < pair_count; i++)
     {
-        arr[i] = false;
-
-        for (int j = 0; j < pair_count; j++)
-        {
-            if (pairs[i].winner == pairs[j].loser && j != i)
-            {
-                arr[i] = true;
-                break;
-                //printf("%i %i\n", i, j);
-            }
-        }
-        // if(arr[i])
-        //     printf("bool arr: %i %i\n", i, 1);
-        // else
-        //     printf("bool arr: %i %i\n", i, 0);
-
         locked[pairs[i].winner][pairs[i].loser] = true;
-        if (i == pair_count - 1)
+
+        validateLock(candidate_count);
+        // if the validateLock function found a cycle we reverse the lock
+        if (!lock)
         {
-            for (int j = 0; j < pair_count; j++)
-            {
-                if (arr[j] == false)
-                {
-                    nonCyclic = true;
-                    break;
-                }
-                else
-                {
-                    nonCyclic = false;
-                }
-            }
-            if (!nonCyclic)
-            {
-                locked[pairs[i].winner][pairs[i].loser] = false;
-            }
-            //printf("%i\n", i);
+            locked[pairs[i].winner][pairs[i].loser] = false;
         }
-        // if(locked[pairs[i].winner][pairs[i].loser])
-        //     printf("locked arr: %i %i\n", i, 1);
-        // else
-        //     printf("locked arr: %i %i\n", i, 0);
-
-
+        lock = true;
     }
-    return;
 }
 
 // Print the winner of the election
 void print_winner(void)
 {
-    // TODO
-    for (int i = 0; i < pair_count; i++)
-    {
-        bool winner = true;
-        for (int j = 0; j < pair_count; j++)
-        {
-            //printf("IP: %s %i %i\n", candidates[pairs[i].winner], pairs[i].winner, pairs[j].loser);
-            if (locked[pairs[i].winner][pairs[i].loser] && locked[pairs[j].winner][pairs[j].loser])
-            {
-                if (pairs[i].winner != pairs[j].loser)
-                {
-                    winner = true;
-                    //printf("True: %s\n", candidates[pairs[i].winner]);
-                }
-                else
-                {
-                    winner = false;
-                    //printf("False: %s\n", candidates[pairs[i].winner]);
-                    break;
-                }
-            }
+    int winner;
+    int rank;
 
-        }
-        if (winner)
+    for (int i = 0; i < candidate_count; i++)
+    {
+        rank = 0;
+        for (int k = 0; k < candidate_count; k++)
         {
-            printf("%s\n", candidates[pairs[i].winner]);
-            return;
+            if (locked[k][i] == false)
+            {
+                rank++;
+            }
+        }
+
+        // Prints all the names that are the source of the graph
+        if (rank == candidate_count)
+        {
+            printf("%s\n", candidates[i]);
         }
     }
-    return;
 }
 
 void merge_sort(int start, int count, pair array[])
