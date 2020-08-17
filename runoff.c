@@ -168,7 +168,7 @@ void tabulate(void)
 bool print_winner(void)
 {
     // TODO
-    float total;
+    float total = 0;
     for (int i = 0; i < candidate_count; i++)
     {
         total = total + candidates[i].votes;
