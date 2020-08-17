@@ -245,7 +245,7 @@ void lock_pairs(void)
             }
             if (arr[i] && lost)
             {
-
+                locked[pairs[i].winner][pairs[i].loser] = false;
             }
             else
             {
