@@ -245,7 +245,10 @@ void lock_pairs(void)
     bool check;
     for (int i = 0; i < pair_count; i++)
     {
-        locked[pairs[i].winner][pairs[i].loser] = true;
+        if (pairs[0].winner != pairs[i].loser)
+        {
+            locked[pairs[i].winner][pairs[i].loser] = true;
+        }
         // if (locked[pairs[i].winner][pairs[i].loser])
         //     printf("win, lose: %i, %i locked val: %i\n", pairs[i].winner, pairs[i].loser, 1);
         // else
