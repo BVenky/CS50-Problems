@@ -113,11 +113,11 @@ int main(int argc, string argv[])
     }
 
     add_pairs();
-    // for (int i = 0; i < pair_count; i++)
-    // {
-    //     printf("P%i ", preferences[pairs[i].winner][pairs[i].loser]);
-    // }
-    // printf("\n");
+    for (int i = 0; i < pair_count; i++)
+    {
+        printf("P%i %i", pairs[i].winner, pairs[i].loser);
+    }
+    printf("\n");
     sort_pairs();
 
     lock_pairs();
@@ -222,13 +222,18 @@ void lock_pairs(void)
 
         for (int j = 0; j < pair_count; j++)
         {
-            if (pairs[i].winner == pairs[j].loser)
+            if (pairs[i].winner == pairs[j].loser && j != i)
             {
                 arr[i] = true;
                 break;
                 //printf("%i %i\n", i, j);
             }
         }
+        if(arr[i])
+            printf("bool arr: %i %i\n", i, 1);
+        else
+            printf("bool arr: %i %i\n", i, 0);
+
         locked[pairs[i].winner][pairs[i].loser] = true;
         if (i == pair_count - 1)
         {
@@ -250,6 +255,10 @@ void lock_pairs(void)
             }
             //printf("%i\n", i);
         }
+        if(locked[pairs[i].winner][pairs[i].loser])
+            printf("locked arr: %i %i\n", i, 1);
+        else
+            printf("locked arr: %i %i\n", i, 0);
 
 
     }
@@ -266,17 +275,21 @@ void print_winner(void)
         for (int j = 0; j < pair_count; j++)
         {
             //printf("IP: %s %i %i\n", candidates[pairs[i].winner], pairs[i].winner, pairs[j].loser);
-            if (pairs[i].winner != pairs[j].loser)
+            if (locked[pairs[i].winner][pairs[i].loser] && locked[pairs[j].winner][pairs[j].loser])
             {
-                winner = true;
-                //printf("True: %s\n", candidates[pairs[i].winner]);
+                if (pairs[i].winner != pairs[j].loser)
+                {
+                    winner = true;
+                    //printf("True: %s\n", candidates[pairs[i].winner]);
+                }
+                else
+                {
+                    winner = false;
+                    //printf("False: %s\n", candidates[pairs[i].winner]);
+                    break;
+                }
             }
-            else
-            {
-                winner = false;
-                //printf("False: %s\n", candidates[pairs[i].winner]);
-                break;
-            }
+
         }
         if (winner)
         {
