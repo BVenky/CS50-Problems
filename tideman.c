@@ -214,57 +214,40 @@ void sort_pairs(void)
 void lock_pairs(void)
 {
     // TODO
-    bool check = false;
+    bool nonCyclic = false;
     bool arr[pair_count];
     for (int i = 0; i < pair_count; i++)
     {
         arr[i] = false;
+
+        for (int j = 0; j < pair_count; j++)
+        {
+            if (pairs[i].winner == pairs[j].loser)
+            {
+                arr[i] = true;
+                break;
+                //printf("%i %i\n", i, j);
+            }
+        }
+        locked[pairs[i].winner][pairs[i].loser] = true;
         if (i == pair_count - 1)
         {
-            bool lost = false;
-            for (int j = 0; j < pair_count - 1; j++)
+            for (int j = 0; j < pair_count; j++)
             {
-                if (!lost && pairs[i].winner == pairs[j].loser)
+                if (arr[j] == false)
                 {
-                    lost = true;
-                }
-
-                if (arr[j] == true)
-                {
-                    arr[i] = true;
-                    //printf("%i %i\n", i, j);
-
+                    nonCyclic = true;
+                    break;
                 }
                 else
                 {
-                    arr[i] = false;
-                    break;
+                    nonCyclic = false;
                 }
-
-
             }
-            if (arr[i] && lost)
+            if (!nonCyclic)
             {
                 locked[pairs[i].winner][pairs[i].loser] = false;
             }
-            else
-            {
-                locked[pairs[i].winner][pairs[i].loser] = true;
-            }
-
-        }
-        else
-        {
-             for (int j = 0; j < pair_count; j++)
-            {
-                if (pairs[i].winner == pairs[j].loser)
-                {
-                    arr[i] = true;
-                    break;
-                    //printf("%i %i\n", i, j);
-                }
-            }
-            locked[pairs[i].winner][pairs[i].loser] = true;
             //printf("%i\n", i);
         }
 
