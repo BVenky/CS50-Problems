@@ -228,6 +228,10 @@ void lock_pairs(void)
                     arr[i] = true;
                     //printf("%i %i\n", i, j);
                 }
+                else
+                {
+                    arr[i] = false;
+                }
 
             }
             if(!arr[i])
