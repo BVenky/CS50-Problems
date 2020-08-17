@@ -35,6 +35,16 @@ void sort_pairs(void);
 void lock_pairs(void);
 void print_winner(void);
 
+string s1[] = {"Alice", "Bob", "Charlie"};
+string s2[] = {"Alice", "Bob", "Charlie"};
+string s3[] = {"Alice", "Bob", "Charlie"};
+string s4[] = {"Bob", "Charlie", "Alice"};
+string s5[] = {"Bob", "Charlie", "Alice"};
+string s6[] = {"Charlie", "Alice", "Bob"};
+string s7[] = {"Charlie", "Alice", "Bob"};
+string s8[] = {"Charlie", "Alice", "Bob"};
+string s9[] = {"Charlie", "Alice", "Bob"};
+
 int main(int argc, string argv[])
 {
     // Check for invalid usage
@@ -99,7 +109,24 @@ int main(int argc, string argv[])
             // {
             //     name = s5[j];
             // }
-            //printf("%s\n", name);
+            // if (i == 5)
+            // {
+            //     name = s6[j];
+            // }
+            // if (i == 6)
+            // {
+            //     name = s7[j];
+            // }
+            // if (i == 7)
+            // {
+            //     name = s8[j];
+            // }
+            // if (i == 8)
+            // {
+            //     name = s9[j];
+            // }
+
+            printf("%s\n", name);
             if (!vote(j, name, ranks))
             {
                 printf("Invalid vote.\n");
@@ -219,7 +246,10 @@ void lock_pairs(void)
     for (int i = 0; i < pair_count; i++)
     {
         locked[pairs[i].winner][pairs[i].loser] = true;
-
+        // if (locked[pairs[i].winner][pairs[i].loser])
+        //     printf("win, lose: %i, %i locked val: %i\n", pairs[i].winner, pairs[i].loser, 1);
+        // else
+        //     printf("win, lose: %i, %i locked val: %i\n", pairs[i].winner, pairs[i].loser, 0);
         cyclic[i] = false;
         for (int j = 0; j < pair_count; j++)
         {
@@ -235,6 +265,10 @@ void lock_pairs(void)
     if (check)
     {
         locked[pairs[pair_count - 1].winner][pairs[pair_count - 1].loser] = false;
+        // if (locked[pairs[pair_count - 1].winner][pairs[pair_count - 1].loser])
+        //     printf("pair_count index: %i, %i locked val: %i\n", pairs[pair_count - 1].winner, pairs[pair_count - 1].loser, 1);
+        // else
+        //     printf("pair_count index: %i, %i locked val: %i\n", pairs[pair_count - 1].winner, pairs[pair_count - 1].loser, 0);
     }
     return;
 }
