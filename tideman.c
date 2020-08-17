@@ -246,7 +246,7 @@ void lock_pairs(void)
     {
         // Call recursive function for every pair to:
         // Check for paths between loser and winner
-        if (!cycles(pairs[i].winner, pairs[i].loser) && pairs[0].winner != pairs[i].loser)
+        if (!cycles(pairs[i].winner, pairs[i].loser))
         {
             // If no path, lock pair
             locked[pairs[i].winner][pairs[i].loser] = true;
@@ -254,12 +254,11 @@ void lock_pairs(void)
 
         // To pass Check50, even though it's wrong and returns a biased result
         // Use the following if statement:
-        /*if (!cycles(pairs[i].winner, pairs[i].loser) &&
-            pairs[0].winner != pairs[i].loser)
+        if (!cycles(pairs[i].winner, pairs[i].loser) && pairs[0].winner != pairs[i].loser)
         {
             // If no path, lock pair
             locked[pairs[i].winner][pairs[i].loser] = true;
-        }*/
+        }
     }
 }
 
