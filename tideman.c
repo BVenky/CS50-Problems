@@ -255,7 +255,7 @@ void lock_pairs(void)
         for (int j = 0; j < pair_count; j++)
         {
 
-            if (pairs[i].winner == pairs[j].loser)
+            if (pairs[i].winner == pairs[j].loser && i <= j)
             {
                 cyclic[i] = true;
                 break;
@@ -263,7 +263,6 @@ void lock_pairs(void)
         }
     }
     check = true;
-    int p;
     for (int j = 0; j < pair_count; j++)
     {
         if(cyclic[j])
@@ -278,7 +277,7 @@ void lock_pairs(void)
     }
     if (check)
     {
-        //locked[pairs[pair_count - 1].winner][pairs[pair_count - 1].loser] = false;
+        locked[pairs[pair_count - 1].winner][pairs[pair_count - 1].loser] = false;
         // if (locked[pairs[pair_count - 1].winner][pairs[pair_count - 1].loser])
         //     printf("pair_count index: %i, %i locked val: %i\n", pairs[pair_count - 1].winner, pairs[pair_count - 1].loser, 1);
         // else
