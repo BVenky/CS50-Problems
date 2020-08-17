@@ -35,6 +35,8 @@ void sort_pairs(void);
 void lock_pairs(void);
 void print_winner(void);
 bool cycles(int winner, int loser);
+bool cycle(int start_index);
+bool cycle_help(int index, bool visited[]);
 
 string s1[] = {"Alice", "Bob", "Charlie"};
 string s2[] = {"Alice", "Bob", "Charlie"};
@@ -241,50 +243,42 @@ void sort_pairs(void)
 // Lock pairs into the candidate graph in order, without creating cycles
 void lock_pairs(void)
 {
-    // TODO
-    bool cyclic[pair_count];
-    bool check;
-    for (int i = 0; i < pair_count; i++)
+    //lock edges
+    for(int i = 0; i < pair_count; i++)
     {
         locked[pairs[i].winner][pairs[i].loser] = true;
-        // if (locked[pairs[i].winner][pairs[i].loser])
-        //     printf("win, lose: %i, %i locked val: %i\n", pairs[i].winner, pairs[i].loser, 1);
-        // else
-        //     printf("win, lose: %i, %i locked val: %i\n", pairs[i].winner, pairs[i].loser, 0);
-        cyclic[i] = false;
-        for (int j = 0; j < pair_count; j++)
-        {
-
-            if (pairs[i].winner == pairs[j].loser && j != i)
-            {
-                cyclic[i] = true;
-                break;
-            }
-        }
+        //check for cycle
+        if(cycle(pairs[i].winner))
+            locked[pairs[i].winner][pairs[i].loser] = false;
     }
-    check = true;
-    for (int j = 0; j < pair_count; j++)
-    {
-        if(cyclic[j])
-        {
-            check = true;
-        }
-        else
-        {
-            check = false;
-            break;
-        }
-    }
-    if (check)
-    {
-        locked[pairs[pair_count - 1].winner][pairs[pair_count - 1].loser] = false;
-        // if (locked[pairs[pair_count - 1].winner][pairs[pair_count - 1].loser])
-        //     printf("pair_count index: %i, %i locked val: %i\n", pairs[pair_count - 1].winner, pairs[pair_count - 1].loser, 1);
-        // else
-        //     printf("pair_count index: %i, %i locked val: %i\n", pairs[pair_count - 1].winner, pairs[pair_count - 1].loser, 0);
-    }
-    return;
 }
+
+//check for a cycle. Returns true or false.
+bool cycle(int start_index)
+{
+    bool visited[candidate_count];
+    for(int i = 0; i < candidate_count; ++i)
+        visited[i] = false;
+    return cycle_help(start_index, visited);
+}
+
+bool cycle_help(int index, bool visited[])
+{
+    if(visited[index])
+        return true;
+
+    visited[index] = true;
+
+    for(int i = 0; i < candidate_count; ++i)
+    {
+        if(locked[index][i] && cycle_help(i, visited))
+        {
+                return true;
+        }
+    }
+    return false;
+}
+
 
 bool cycles(int winner, int loser)
 {
