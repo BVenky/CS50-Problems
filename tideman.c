@@ -221,12 +221,19 @@ void lock_pairs(void)
         arr[i] = false;
         if (i == pair_count - 1)
         {
+            bool lost = false;
             for (int j = 0; j < pair_count - 1; j++)
             {
-                if (pairs[i].winner == pairs[j].loser && arr[j] == true)
+                if (!lost && pairs[i].winner == pairs[j].loser)
+                {
+                    lost = true;
+                }
+
+                if (arr[j] == true)
                 {
                     arr[i] = true;
                     //printf("%i %i\n", i, j);
+
                 }
                 else
                 {
@@ -234,8 +241,13 @@ void lock_pairs(void)
                     break;
                 }
 
+
             }
-            if(!arr[i])
+            if (arr[i] && lost)
+            {
+
+            }
+            else
             {
                 locked[pairs[i].winner][pairs[i].loser] = true;
             }
