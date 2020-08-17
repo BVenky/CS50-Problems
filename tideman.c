@@ -215,23 +215,37 @@ void lock_pairs(void)
 {
     // TODO
     bool check = false;
+    bool arr[pair_count];
     for (int i = 0; i < pair_count; i++)
     {
+        arr[i] = false;
         if (i == pair_count - 1)
         {
-            for (int j = 0; j < pair_count; j++)
+            for (int j = 0; j < pair_count - 1; j++)
             {
-                if (pairs[i].winner != pairs[j].loser)
+                if (pairs[i].winner == pairs[j].loser && arr[j] == true)
                 {
-                    locked[pairs[i].winner][pairs[i].loser] = true;
+                    arr[i] = true;
                     //printf("%i %i\n", i, j);
-
                 }
 
+            }
+            if(!arr[i])
+            {
+                locked[pairs[i].winner][pairs[i].loser] = true;
             }
         }
         else
         {
+             for (int j = 0; j < pair_count; j++)
+            {
+                if (pairs[i].winner == pairs[j].loser)
+                {
+                    arr[i] = true;
+                    //printf("%i %i\n", i, j);
+                }
+
+            }
             locked[pairs[i].winner][pairs[i].loser] = true;
             //printf("%i\n", i);
         }
