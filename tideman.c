@@ -231,6 +231,7 @@ void lock_pairs(void)
                 else
                 {
                     arr[i] = false;
+                    break;
                 }
 
             }
@@ -248,7 +249,6 @@ void lock_pairs(void)
                     arr[i] = true;
                     //printf("%i %i\n", i, j);
                 }
-
             }
             locked[pairs[i].winner][pairs[i].loser] = true;
             //printf("%i\n", i);
