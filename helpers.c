@@ -31,27 +31,27 @@ void sepia(int height, int width, RGBTRIPLE image[height][width])
             uint8_t sepiaBlue = round(.272 * image[h][w].rgbtRed + .534 * image[h][w].rgbtGreen + .131 * image[h][w].rgbtBlue);
             if (sepiaRed > (uint8_t) 255)
             {
-                sepiaRed = 255;
+                sepiaRed = (uint8_t) 255;
             }
             else if (sepiaRed < (uint8_t) 0)
             {
-                sepiaRed = 0;
+                sepiaRed = (uint8_t) 0;
             }
             if (sepiaGreen > (uint8_t) 255)
             {
-                sepiaGreen = 255;
+                sepiaGreen = (uint8_t) 255;
             }
             else if (sepiaGreen < (uint8_t) 0)
             {
-                sepiaGreen = 0;
+                sepiaGreen = (uint8_t) 0;
             }
             if (sepiaBlue > (uint8_t) 255)
             {
-                sepiaBlue = 255;
+                sepiaBlue = (uint8_t) 255;
             }
             else if (sepiaBlue < (uint8_t) 0)
             {
-                sepiaBlue = 0;
+                sepiaBlue = (uint8_t) 0;
             }
             image[h][w].rgbtBlue = sepiaBlue;
             image[h][w].rgbtGreen = sepiaGreen;
