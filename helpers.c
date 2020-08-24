@@ -2,10 +2,12 @@
 #include "math.h"
 #include <stdint.h>
 #include "stdio.h"
+#include "stdlib.h"
 
 int getSliceAvg(int tmpH, int tmpW, int h, int w, int color, RGBTRIPLE image[h][w]);
 int getEdgeValue(int tmpH, int tmpW, int h, int w, int color, RGBTRIPLE image[h][w]);
 int square(int number);
+int limit(int ip);
 
 // Convert image to grayscale
 void grayscale(int height, int width, RGBTRIPLE image[height][width])
@@ -136,6 +138,7 @@ int getSliceAvg(int tmpH, int tmpW, int h, int w, int color, RGBTRIPLE image[h][
 // Detect edges
 void edges(int height, int width, RGBTRIPLE image[height][width])
 {
+    //printf("Call: %i\n", getEdgeValue(0, 0, height, width, 0, image));
     RGBTRIPLE tmpIm[height][width];
     for (int h = 0; h < height; h++)
     {
@@ -144,40 +147,10 @@ void edges(int height, int width, RGBTRIPLE image[height][width])
         {
             int tmpW = w - 1;
 
-            // get the averages of a slice to smoothen the image
-            int edgeRed = getEdgeValue(tmpH, tmpW, height, width, 0, image);
-            int edgeBlue = getEdgeValue(tmpH, tmpW, height, width, 1, image);
-            int edgeGreen = getEdgeValue(tmpH, tmpW, height, width, 2, image);
-
-            // Restrict values beyond 255 to 255 and values below 0 to 0
-            // if (edgeRed > 255)
-            // {
-            //     edgeRed = 255;
-            // }
-            // else if (edgeRed < 0)
-            // {
-            //     edgeRed = 0;
-            // }
-            // if (edgeBlue > 255)
-            // {
-            //     edgeBlue = 255;
-            // }
-            // else if (edgeBlue < 0)
-            // {
-            //     edgeBlue = 0;
-            // }
-            // if (edgeGreen > 255)
-            // {
-            //     edgeGreen = 255;
-            // }
-            // else if (edgeGreen < 0)
-            // {
-            //     edgeGreen = 0;
-            // }
-
-            tmpIm[h][w].rgbtRed = (uint8_t) edgeRed;
-            tmpIm[h][w].rgbtBlue = (uint8_t) edgeBlue;
-            tmpIm[h][w].rgbtGreen = (uint8_t) edgeGreen;
+            // get the sobel filter output of a slice to get edges in the image
+            tmpIm[h][w].rgbtRed = (uint8_t) limit(getEdgeValue(tmpH, tmpW, height, width, 0, image));;
+            tmpIm[h][w].rgbtBlue = (uint8_t) limit(getEdgeValue(tmpH, tmpW, height, width, 1, image));
+            tmpIm[h][w].rgbtGreen = (uint8_t) limit(getEdgeValue(tmpH, tmpW, height, width, 2, image));
         }
     }
     for (int i = 0; i < width; i++)
@@ -214,6 +187,7 @@ int getEdgeValue(int tmpH, int tmpW, int h, int w, int color, RGBTRIPLE image[h]
     int ctH = 0;
     for (int i = 0; i < 9; i++)
     {
+        //printf("cth: %i k: %i\n", ctH, k);
 
         // Condition to avoid indexing error for index less than 0 and greater than max height or width
         if (tmpH < 0 || tmpW + k < 0 || tmpH >= h || tmpW + k >= w)
@@ -253,8 +227,8 @@ int getEdgeValue(int tmpH, int tmpW, int h, int w, int color, RGBTRIPLE image[h]
         }
 
     }
-
-    int sum = square(sumx) + square(sumy);//Calculate final value using sobel formula
+    //printf("SumX: %i SumY: %i\n", sumx, sumy);
+    int sum = round(sqrt(square(sumx) + square(sumy)));//Calculate final value using sobel formula
     return sum; // Round the average and return
 }
 
@@ -262,4 +236,17 @@ int square(int number)
 {
     int sq = number * number;
     return sq;
+}
+
+int limit(int ip)
+{
+    if (ip > 255)
+    {
+        ip = 255;
+    }
+    if (ip < 0)
+    {
+        ip = 0;
+    }
+    return ip;
 }
