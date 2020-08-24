@@ -150,30 +150,30 @@ void edges(int height, int width, RGBTRIPLE image[height][width])
             int edgeGreen = getEdgeValue(tmpH, tmpW, height, width, 2, image);
 
             // Restrict values beyond 255 to 255 and values below 0 to 0
-            if (edgeRed > 255)
-            {
-                edgeRed = 255;
-            }
-            else if (edgeRed < 0)
-            {
-                edgeRed = 0;
-            }
-            if (edgeBlue > 255)
-            {
-                edgeBlue = 255;
-            }
-            else if (edgeBlue < 0)
-            {
-                edgeBlue = 0;
-            }
-            if (edgeGreen > 255)
-            {
-                edgeGreen = 255;
-            }
-            else if (edgeGreen < 0)
-            {
-                edgeGreen = 0;
-            }
+            // if (edgeRed > 255)
+            // {
+            //     edgeRed = 255;
+            // }
+            // else if (edgeRed < 0)
+            // {
+            //     edgeRed = 0;
+            // }
+            // if (edgeBlue > 255)
+            // {
+            //     edgeBlue = 255;
+            // }
+            // else if (edgeBlue < 0)
+            // {
+            //     edgeBlue = 0;
+            // }
+            // if (edgeGreen > 255)
+            // {
+            //     edgeGreen = 255;
+            // }
+            // else if (edgeGreen < 0)
+            // {
+            //     edgeGreen = 0;
+            // }
 
             tmpIm[h][w].rgbtRed = (uint8_t) edgeRed;
             tmpIm[h][w].rgbtBlue = (uint8_t) edgeBlue;
