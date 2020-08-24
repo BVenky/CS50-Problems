@@ -144,7 +144,7 @@ int getSliceAvg(int tmpH, int tmpW, int h, int w, int color, RGBTRIPLE image[h][
         // Condition to avoid indexing error for index less than 0 and greater than max height or width
         if (tmpH < 0 || tmpW + k < 0 || tmpH >= h || tmpW + k >= w)
         {
-            avg = avg + 0;
+            sum = sum + 0;
             //divd--;
         }
         else
@@ -152,15 +152,15 @@ int getSliceAvg(int tmpH, int tmpW, int h, int w, int color, RGBTRIPLE image[h][
             // Keep adding to sum variable
             if (color == 0)
             {
-                avg = avg + image[tmpH][tmpW + k].rgbtRed;
+                sum = sum + image[tmpH][tmpW + k].rgbtRed;
             }
             else if (color == 1)
             {
-                avg = avg + image[tmpH][tmpW + k].rgbtBlue;
+                sum = sum + image[tmpH][tmpW + k].rgbtBlue;
             }
             else if (color == 2)
             {
-                avg = avg + image[tmpH][tmpW + k].rgbtGreen;
+                sum = sum + image[tmpH][tmpW + k].rgbtGreen;
             }
             divd++; //increment the number of elements counter
         }
