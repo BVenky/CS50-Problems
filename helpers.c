@@ -144,14 +144,14 @@ int getSliceAvg(int tmpH, int tmpW, int h, int w, int color, RGBTRIPLE image[h][
 {
     int k = 0;
     float avg = 0;
-    int divd = 9;
+    int divd = 0;
     for (int i = 0; i < 9; i++)
     {
 
         if (tmpH < 0 || tmpW + k < 0 || tmpH >= h || tmpW + k >= w)
         {
             avg = avg + 0;
-            divd--;
+            //divd--;
         }
         else
         {
@@ -169,6 +169,7 @@ int getSliceAvg(int tmpH, int tmpW, int h, int w, int color, RGBTRIPLE image[h][
             }
             //printf("tmpH: %i tmpW: %i h: %i w: %i\n", tmpH, tmpW + k, h, w);
             //printf("Rval: %i\n", image[tmpH][tmpW + k].rgbtRed);
+            divd++;
         }
         if (k == 2)
         {
