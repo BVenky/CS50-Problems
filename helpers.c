@@ -255,7 +255,7 @@ int getEdgeValue(int tmpH, int tmpW, int h, int w, int color, RGBTRIPLE image[h]
     }
 
     int sum = square(sumx) + square(sumy);//Calculate final value using sobel formula
-    return (int) round(sum); // Round the average and return
+    return sum; // Round the average and return
 }
 
 int square(int number)
