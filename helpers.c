@@ -145,9 +145,39 @@ void edges(int height, int width, RGBTRIPLE image[height][width])
             int tmpW = w - 1;
 
             // get the averages of a slice to smoothen the image
-            tmpIm[h][w].rgbtRed = (uint8_t) getEdgeValue(tmpH, tmpW, height, width, 0, image);;
-            tmpIm[h][w].rgbtBlue = (uint8_t) getEdgeValue(tmpH, tmpW, height, width, 1, image);
-            tmpIm[h][w].rgbtGreen = (uint8_t) getEdgeValue(tmpH, tmpW, height, width, 2, image);
+            int edgeRed = getEdgeValue(tmpH, tmpW, height, width, 0, image);
+            int edgeBlue = getEdgeValue(tmpH, tmpW, height, width, 1, image);
+            int edgeGreen = getEdgeValue(tmpH, tmpW, height, width, 2, image);
+
+            // Restrict values beyond 255 to 255 and values below 0 to 0
+            if (edgeRed > 255)
+            {
+                edgeRed = 255;
+            }
+            else if (edgeRed < 0)
+            {
+                edgeRed = 0;
+            }
+            if (edgeBlue > 255)
+            {
+                edgeBlue = 255;
+            }
+            else if (edgeBlue < 0)
+            {
+                edgeBlue = 0;
+            }
+            if (edgeGreen > 255)
+            {
+                edgeGreen = 255;
+            }
+            else if (edgeGreen < 0)
+            {
+                edgeGreen = 0;
+            }
+
+            tmpIm[h][w].rgbtRed = (uint8_t) edgeRed;
+            tmpIm[h][w].rgbtBlue = (uint8_t) edgeBlue;
+            tmpIm[h][w].rgbtGreen = (uint8_t) edgeGreen;
         }
     }
     for (int i = 0; i < width; i++)
@@ -167,9 +197,9 @@ void edges(int height, int width, RGBTRIPLE image[height][width])
 int getEdgeValue(int tmpH, int tmpW, int h, int w, int color, RGBTRIPLE image[h][w])
 {
     int k = 0;
-    float sumx = 0;
-    float sumy = 0;
-    int divd = 0;
+    int sumx = 0;
+    int sumy = 0;
+
     int gx[3][3] = {
         {-1, 0, 1},
         {-2, 0, 2},
@@ -179,6 +209,7 @@ int getEdgeValue(int tmpH, int tmpW, int h, int w, int color, RGBTRIPLE image[h]
         {-1, -2, -1},
         {0, 0, 0},
         {1, 2, 1}};
+
     int tmpMul[3][3];
     int ctH = 0;
     for (int i = 0; i < 9; i++)
@@ -209,7 +240,6 @@ int getEdgeValue(int tmpH, int tmpW, int h, int w, int color, RGBTRIPLE image[h]
                 sumx = sumx + image[tmpH][tmpW + k].rgbtGreen * gx[ctH][k] ;
                 sumy = sumy + image[tmpH][tmpW + k].rgbtGreen * gy[ctH][k] ;
             }
-            divd++; //increment the number of elements counter
         }
         if (k == 2)
         {
