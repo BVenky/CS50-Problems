@@ -182,6 +182,6 @@ int getSliceAvg(int tmpH, int tmpW, int h, int w, int color, RGBTRIPLE image[h][
 
     }
     //printf("divd: %i\n", divd);
-    avg = avg / divd;
+    avg = avg / 9;
     return (int) round(avg);
 }
