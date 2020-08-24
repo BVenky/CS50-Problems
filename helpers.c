@@ -173,15 +173,19 @@ int getEdgeValue(int tmpH, int tmpW, int h, int w, int color, RGBTRIPLE image[h]
     int sumx = 0;
     int sumy = 0;
 
-    int gx[3][3] = {
+    int gx[3][3] =
+    {
         {-1, 0, 1},
         {-2, 0, 2},
-        {-1, 0, 1}};
+        {-1, 0, 1}
+    };
 
-    int gy[3][3] = {
+    int gy[3][3] =
+    {
         {-1, -2, -1},
         {0, 0, 0},
-        {1, 2, 1}};
+        {1, 2, 1}
+    };
 
     int tmpMul[3][3];
     int ctH = 0;
