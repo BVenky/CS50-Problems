@@ -4,6 +4,9 @@
 #include "stdio.h"
 
 int getSliceAvg(int tmpH, int tmpW, int h, int w, int color, RGBTRIPLE image[h][w]);
+int getEdgeValue(int tmpH, int tmpW, int h, int w, int color, RGBTRIPLE image[h][w]);
+int square(int number);
+
 // Convert image to grayscale
 void grayscale(int height, int width, RGBTRIPLE image[height][width])
 {
@@ -142,9 +145,9 @@ void edges(int height, int width, RGBTRIPLE image[height][width])
             int tmpW = w - 1;
 
             // get the averages of a slice to smoothen the image
-            tmpIm[h][w].rgbtRed = (uint8_t) getSliceAvg(tmpH, tmpW, height, width, 0, image);;
-            tmpIm[h][w].rgbtBlue = (uint8_t) getSliceAvg(tmpH, tmpW, height, width, 1, image);
-            tmpIm[h][w].rgbtGreen = (uint8_t) getSliceAvg(tmpH, tmpW, height, width, 2, image);
+            tmpIm[h][w].rgbtRed = (uint8_t) getEdgeValue(tmpH, tmpW, height, width, 0, image);;
+            tmpIm[h][w].rgbtBlue = (uint8_t) getEdgeValue(tmpH, tmpW, height, width, 1, image);
+            tmpIm[h][w].rgbtGreen = (uint8_t) getEdgeValue(tmpH, tmpW, height, width, 2, image);
         }
     }
     for (int i = 0; i < width; i++)
@@ -164,7 +167,8 @@ void edges(int height, int width, RGBTRIPLE image[height][width])
 int getEdgeValue(int tmpH, int tmpW, int h, int w, int color, RGBTRIPLE image[h][w])
 {
     int k = 0;
-    float sum = 0;
+    float sumx = 0;
+    float sumy = 0;
     int divd = 0;
     int gx[3][3] = {
         {-1, 0, 1},
@@ -183,7 +187,8 @@ int getEdgeValue(int tmpH, int tmpW, int h, int w, int color, RGBTRIPLE image[h]
         // Condition to avoid indexing error for index less than 0 and greater than max height or width
         if (tmpH < 0 || tmpW + k < 0 || tmpH >= h || tmpW + k >= w)
         {
-            sum = sum + 0;
+            sumx = sumx + 0;
+            sumy = sumy + 0;
             //divd--;
         }
         else
@@ -191,15 +196,18 @@ int getEdgeValue(int tmpH, int tmpW, int h, int w, int color, RGBTRIPLE image[h]
             // Keep adding to sum variable
             if (color == 0)
             {
-                sum = sum + image[tmpH][tmpW + k].rgbtRed * gx[ctH][k];
+                sumx = sumx + image[tmpH][tmpW + k].rgbtRed * gx[ctH][k] ;
+                sumy = sumy + image[tmpH][tmpW + k].rgbtRed * gy[ctH][k] ;
             }
             else if (color == 1)
             {
-                sum = sum + image[tmpH][tmpW + k].rgbtBlue * gx[ctH][k];
+                sumx = sumx + image[tmpH][tmpW + k].rgbtBlue * gx[ctH][k] ;
+                sumy = sumy + image[tmpH][tmpW + k].rgbtBlue * gy[ctH][k] ;
             }
             else if (color == 2)
             {
-                sum = sum + image[tmpH][tmpW + k].rgbtGreen * gx[ctH][k];
+                sumx = sumx + image[tmpH][tmpW + k].rgbtGreen * gx[ctH][k] ;
+                sumy = sumy + image[tmpH][tmpW + k].rgbtGreen * gy[ctH][k] ;
             }
             divd++; //increment the number of elements counter
         }
@@ -216,6 +224,12 @@ int getEdgeValue(int tmpH, int tmpW, int h, int w, int color, RGBTRIPLE image[h]
 
     }
 
-    float avg = sum / divd; // Calculate Average
-    return (int) round(avg); // Round the average and return
+    int sum = square(sumx) + square(sumy);//Calculate final value using sobel formula
+    return (int) round(sum); // Round the average and return
+}
+
+int square(int number)
+{
+    int sq = number * number;
+    return sq;
 }
