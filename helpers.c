@@ -12,7 +12,11 @@ void grayscale(int height, int width, RGBTRIPLE image[height][width])
         for (int w = 0; w < width; w++)
         {
             float avg = 0;
+
+            // Calculate average and round the value
             avg = round((image[h][w].rgbtBlue + image[h][w].rgbtGreen + image[h][w].rgbtRed) / (float) 3);
+
+            // Update values into the main
             image[h][w].rgbtBlue = (uint8_t) avg;
             image[h][w].rgbtGreen = (uint8_t) avg;
             image[h][w].rgbtRed = (uint8_t) avg;
@@ -29,9 +33,14 @@ void sepia(int height, int width, RGBTRIPLE image[height][width])
     {
         for (int w = 0; w < width; w++)
         {
+            //formula to sepiaRed
             int sepiaRed = round(.393 * image[h][w].rgbtRed + .769 * image[h][w].rgbtGreen + .189 * image[h][w].rgbtBlue);
+            //formula to sepiaGreen
             int sepiaGreen = round(.349 * image[h][w].rgbtRed + .686 * image[h][w].rgbtGreen + .168 * image[h][w].rgbtBlue);
+            //formula to sepiaBlue
             int sepiaBlue = round(.272 * image[h][w].rgbtRed + .534 * image[h][w].rgbtGreen + .131 * image[h][w].rgbtBlue);
+
+            // Restrict values beyond 255 to 255 and values below 0 to 0
             if (sepiaRed > 255)
             {
                 sepiaRed = 255;
@@ -57,6 +66,7 @@ void sepia(int height, int width, RGBTRIPLE image[height][width])
                 sepiaBlue = 0;
             }
 
+            // Update the values in the main struct
             image[h][w].rgbtBlue = (uint8_t) sepiaBlue;
             image[h][w].rgbtGreen = (uint8_t) sepiaGreen;
             image[h][w].rgbtRed = (uint8_t) sepiaRed;
@@ -69,6 +79,7 @@ void sepia(int height, int width, RGBTRIPLE image[height][width])
 void reflect(int height, int width, RGBTRIPLE image[height][width])
 {
     int tmpwidth = width / 2;
+    // Check if width is even or odd
     if (width % 2 == 0)
     {
         tmpwidth = tmpwidth - 1;
@@ -81,7 +92,9 @@ void reflect(int height, int width, RGBTRIPLE image[height][width])
             {
                 continue;
             }
-            RGBTRIPLE tmp = image[h][w];
+            RGBTRIPLE tmp = image[h][w]; // Hold temp value to copy
+
+            // Switch Values
             image[h][w] = image[h][width - 1 - w];
             image[h][width - 1 - w] = tmp;
         }
@@ -92,9 +105,6 @@ void reflect(int height, int width, RGBTRIPLE image[height][width])
 // Blur image
 void blur(int height, int width, RGBTRIPLE image[height][width])
 {
-
-    //printf("Avg: %i\n", (uint8_t) getSliceAvg(398, 598, height, width, 2, image));
-    //printf("Height: %i Width: %i\n", height, width);
     RGBTRIPLE tmpIm[height][width];
     for (int h = 0; h < height; h++)
     {
@@ -103,45 +113,17 @@ void blur(int height, int width, RGBTRIPLE image[height][width])
         {
             int tmpW = w - 1;
 
-            //getSliceAvg(tmpH, tmpW, image);
-            int blurRed = getSliceAvg(tmpH, tmpW, height, width, 0, image);
-            int blurBlue = getSliceAvg(tmpH, tmpW, height, width, 1, image);
-            int blurGreen = getSliceAvg(tmpH, tmpW, height, width, 2, image);
-
-            if (blurRed > 255)
-            {
-                blurRed = 255;
-            }
-            else if (blurRed < 0)
-            {
-                blurRed = 0;
-            }
-            if (blurGreen > 255)
-            {
-                blurGreen = 255;
-            }
-            else if (blurGreen < 0)
-            {
-                blurGreen = 0;
-            }
-            if (blurBlue > 255)
-            {
-                blurBlue = 255;
-            }
-            else if (blurBlue < 0)
-            {
-                blurBlue = 0;
-            }
-
-            tmpIm[h][w].rgbtRed = (uint8_t) blurRed;
-            tmpIm[h][w].rgbtBlue = (uint8_t) blurBlue;
-            tmpIm[h][w].rgbtGreen = (uint8_t) blurGreen;
+            // get the averages of a slice to smoothen the image
+            tmpIm[h][w].rgbtRed = (uint8_t) getSliceAvg(tmpH, tmpW, height, width, 0, image);;
+            tmpIm[h][w].rgbtBlue = (uint8_t) getSliceAvg(tmpH, tmpW, height, width, 1, image);
+            tmpIm[h][w].rgbtGreen = (uint8_t) getSliceAvg(tmpH, tmpW, height, width, 2, image);
         }
     }
     for (int i = 0; i < width; i++)
     {
         for (int j = 0; j < height; j++)
         {
+            // Copy the updated temporary image into the main image struct
             image[j][i].rgbtBlue = tmpIm[j][i].rgbtBlue;
             image[j][i].rgbtGreen = tmpIm[j][i].rgbtGreen;
             image[j][i].rgbtRed = tmpIm[j][i].rgbtRed;
@@ -150,14 +132,16 @@ void blur(int height, int width, RGBTRIPLE image[height][width])
     return;
 }
 
+//Get average of the elements within distance 1 of the input element
 int getSliceAvg(int tmpH, int tmpW, int h, int w, int color, RGBTRIPLE image[h][w])
 {
     int k = 0;
-    float avg = 0;
+    float sum = 0;
     int divd = 0;
     for (int i = 0; i < 9; i++)
     {
 
+        // Condition to avoid indexing error for index less than 0 and greater than max height or width
         if (tmpH < 0 || tmpW + k < 0 || tmpH >= h || tmpW + k >= w)
         {
             avg = avg + 0;
@@ -165,6 +149,7 @@ int getSliceAvg(int tmpH, int tmpW, int h, int w, int color, RGBTRIPLE image[h][
         }
         else
         {
+            // Keep adding to sum variable
             if (color == 0)
             {
                 avg = avg + image[tmpH][tmpW + k].rgbtRed;
@@ -177,9 +162,7 @@ int getSliceAvg(int tmpH, int tmpW, int h, int w, int color, RGBTRIPLE image[h][
             {
                 avg = avg + image[tmpH][tmpW + k].rgbtGreen;
             }
-            //printf("tmpH: %i tmpW: %i h: %i w: %i\n", tmpH, tmpW + k, h, w);
-            //printf("Rval: %i\n", image[tmpH][tmpW + k].rgbtRed);
-            divd++;
+            divd++; //increment the number of elements counter
         }
         if (k == 2)
         {
@@ -192,7 +175,7 @@ int getSliceAvg(int tmpH, int tmpW, int h, int w, int color, RGBTRIPLE image[h][
         }
 
     }
-    //printf("divd: %i\n", divd);
-    avg = avg / divd;
-    return (int) round(avg);
+
+    float avg = sum / divd; // Calculate Average
+    return (int) round(avg); // Round the average and return
 }
