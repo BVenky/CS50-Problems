@@ -95,6 +95,7 @@ void blur(int height, int width, RGBTRIPLE image[height][width])
 
     //printf("Avg: %i\n", (uint8_t) getSliceAvg(398, 598, height, width, 2, image));
     //printf("Height: %i Width: %i\n", height, width);
+    RGBTRIPLE tmpIm[height][width];
     for (int h = 0; h < height; h++)
     {
         int tmpH = h - 1;
@@ -132,9 +133,18 @@ void blur(int height, int width, RGBTRIPLE image[height][width])
                 blurBlue = 0;
             }
 
-            image[h][w].rgbtRed = (uint8_t) blurRed;
-            image[h][w].rgbtBlue = (uint8_t) blurBlue;
-            image[h][w].rgbtGreen = (uint8_t) blurGreen;
+            tmpIm[h][w].rgbtRed = (uint8_t) blurRed;
+            tmpIm[h][w].rgbtBlue = (uint8_t) blurBlue;
+            tmpIm[h][w].rgbtGreen = (uint8_t) blurGreen;
+        }
+    }
+    for (int i = 0; i < width; i++)
+    {
+        for (int j = 0; j < height; j++)
+        {
+            image[j][i].rgbtBlue = tmpIm[j][i].rgbtBlue;
+            image[j][i].rgbtGreen = tmpIm[j][i].rgbtGreen;
+            image[j][i].rgbtRed = tmpIm[j][i].rgbtRed;
         }
     }
     return;
