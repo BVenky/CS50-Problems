@@ -7,7 +7,7 @@ int main(int argc, char *argv[])
     //Check if correct number of arguments are entered
     if (argc != 2)
     {
-        printf("Usage ./render (raw file path)\n"); //Prompt Usage
+        fprintf(stderr, "Usage ./render (raw file path)\n"); //Prompt Usage
         return 1;
     }
     //Read Raw File
@@ -16,13 +16,13 @@ int main(int argc, char *argv[])
     //Check if the file is valid and opened
     if (rawfile == NULL)
     {
-        printf("Cannot open Raw file\n");
+        fprintf(stderr, "Cannot open Raw file\n");
         return 1;
     }
 
     //Define a Char array block of size 512
     unsigned char *bytes = malloc(512);
-    int byteCount = 0, count = 0;
+    int count = 0;
 
     FILE *img;
     // Read file in blocks of size 512
@@ -35,38 +35,32 @@ int main(int argc, char *argv[])
             {
                 fclose(img);
             }
-            printf("True %i\n", count);
+            //printf("True %i\n", count);
             sprintf(filename, "%03d.jpg", count);
 
             img = fopen(filename, "w");
 
             if (img == NULL)
             {
-                fclose(img);
                 free(bytes);
-                free(filename);
-                free(rawfile);
+                fclose(rawfile);
+                fprintf(stderr, "Could not create Output Image: %s", filename);
                 return 1;
             }
             count++;
         }
-        byteCount++;
-
-        if (byteCount == 512)
+        if (count > 0)
         {
-            byteCount = 0;
+            fwrite(bytes, 512, 1, img);
         }
 
     }
 
-    if (count > 0)
-    {
-        fwrite(bytes, 512, 1, img);
-    }
+
     fclose(img);
     free(bytes);
+    fclose(rawfile);
     free(filename);
-    free(rawfile);
     return 0;
 
 }
